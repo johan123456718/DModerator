@@ -31,12 +31,13 @@ public class Bot {
         }
     }
 
-    // To-DO: MUST ADD :owoPolice: emoji to bot ACTIVITY!!!
+    // To-DO: MUST ADD :owoPolice: emoji to bot ACTIVITY!!! :)
     private CommandClient buildCommandClient(){
         return new CommandClientBuilder()
                     .setPrefix(ConfigLoad.prefix())
                     .setActivity(Activity.playing("Watching for any criminal behavior"))
                     .setOwnerId(ConfigLoad.owner())
+                    .setCoOwnerIds(ConfigLoad.mods())
                     .addCommands(
                             new WarningCommand(eventWaiter)
                     )
