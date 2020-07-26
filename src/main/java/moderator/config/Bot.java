@@ -10,21 +10,11 @@ import java.util.Optional;
 public class Bot {
     private static JDA jda;
     private String token;
-    private Config config;
 
     public Bot(String fileName){
-        initConfig(fileName);
-        initToken();
-    }
-
-    private void initConfig(String fileName){
-        config = Config.Load.instance(fileName);
-
-        System.out.println("Finish loading configurations!");
-    }
-
-    private void initToken(){
-        token = config.getToken();
+        Config.Load.instance(fileName);
+        token = Config.Load.token();
+        System.out.println("Finish loading bot configurations!");
     }
 
     public void run(){

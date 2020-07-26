@@ -18,6 +18,7 @@ public class Config {
          */
         properties = filename.isBlank() ? createProperties() : createProperties(filename);
         Load.prefix = loadPrefix(); // Static prefix to be used throughout the application
+        Load.token = loadToken();
     }
 
     private Properties createProperties() throws Exception{
@@ -45,14 +46,14 @@ public class Config {
         return properties.getProperty("prefix");
     }
 
-    // Only meant to be used for main method
-    public String getToken(){
+    private String loadToken(){
         return properties.getProperty("token");
     }
 
     // nested static class created for better organization
     public static class Load{
         private static String prefix;
+        private static String token;
 
         // Create Config object; only meant for main method
         // Not sure if use of Optional is necessary here,
@@ -73,6 +74,10 @@ public class Config {
         // Static prefix to be used throughout the application
         public static String prefix(){
             return Optional.ofNullable(prefix).orElseThrow(() -> new NoSuchElementException("Error! Prefix is not loaded! Please run `Config.loadConfig()`"));
+        }
+
+        public static String token(){
+            return Optional.ofNullable(token).orElseThrow(() -> new NoSuchElementException("Error! Token is not loaded! Please run `Config.loadConfig()"));
         }
     }
 }
