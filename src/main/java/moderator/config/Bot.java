@@ -3,7 +3,7 @@ package moderator.config;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import moderator.commands.WarningCommand;
+import moderator.commands.UserInfoCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -39,7 +39,7 @@ public class Bot {
                     .setOwnerId(ConfigLoad.owner())
                     .setCoOwnerIds(ConfigLoad.mods())
                     .addCommands(
-                            new WarningCommand(eventWaiter)
+                            new UserInfoCommand(eventWaiter)
                     )
                     .build();
 
