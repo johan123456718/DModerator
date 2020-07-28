@@ -62,6 +62,6 @@ public class Bot {
 
     public static JDA getJDA(){
         Optional<JDA> jdaOrNull = Optional.ofNullable(jda);
-        return jdaOrNull.orElseThrow(() -> new NoSuchElementException("JDA is null! Run `buildJDA()` first! "));
+        return jdaOrNull.orElseThrow(() -> new NoSuchElementException("JDA is null! Run `buildJDA()` first!"));
     }
 }

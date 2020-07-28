@@ -26,7 +26,7 @@ public class RuleInfoCommand extends Command {
         User admin = event.getAuthor();
         EmbedBuilder eb = new EmbedBuilder()
                 .setColor(Color.cyan)
-                .setDescription("Rules of the server ")
+                .setDescription("Rules of the server")
                 .addField("No cursing", "if you use racist-, homophobic- or cursing words, you will get banned", false)
                 .addField("Don't be annoying" , "if you are still annoying, you will get x-minutes mute", false)
                 .addField("Don't interrupt people " , "if you interrupt people, you will get warned", false)
