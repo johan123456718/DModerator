@@ -3,6 +3,7 @@ package moderator.config;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import moderator.commands.RuleInfoCommand;
 import moderator.commands.UserInfoCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -41,7 +42,8 @@ public class Bot {
                     .setOwnerId(ConfigLoad.owner())
                     .setCoOwnerIds(ConfigLoad.mods())
                     .addCommands(
-                            new UserInfoCommand(eventWaiter)
+                            new UserInfoCommand(eventWaiter),
+                            new RuleInfoCommand(eventWaiter)
                     )
                     .build();
 
@@ -49,8 +51,8 @@ public class Bot {
 
     private void buildJDA() throws Exception{
         jda = JDABuilder.createDefault(ConfigLoad.token())
-                .setEnabledIntents(GatewayIntent.GUILD_PRESENCES)
-                .setEnabledIntents(GatewayIntent.GUILD_MEMBERS)
+                .enableIntents(GatewayIntent.GUILD_PRESENCES)
+                .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(eventWaiter, buildCommandClient())
                 .build();
         jda.awaitReady();
