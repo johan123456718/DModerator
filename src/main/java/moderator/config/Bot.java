@@ -7,6 +7,8 @@ import moderator.commands.UserInfoCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -47,6 +49,8 @@ public class Bot {
 
     private void buildJDA() throws Exception{
         jda = JDABuilder.createDefault(ConfigLoad.token())
+                .setEnabledIntents(GatewayIntent.GUILD_PRESENCES)
+                .setEnabledIntents(GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(eventWaiter, buildCommandClient())
                 .build();
         jda.awaitReady();
