@@ -3,15 +3,9 @@ package moderator.commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import moderator.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.utils.WidgetUtil;
 
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +21,6 @@ public class UserInfoCommand extends Command {
         super.aliases = new String[]{"u"};
         super.category = new Category("Members");
         super.cooldown = 10;
-        super.arguments = "[name]";
         this.waiter = waiter;
     }
 
@@ -40,14 +33,14 @@ public class UserInfoCommand extends Command {
             e -> e.getAuthor().equals(event.getAuthor()) && e.getChannel().equals(event.getChannel()),
                 e -> {
                 try {
-                    Member name = e.getMessage().getMentionedMembers().get(0);
+                    Member mentionUser = e.getMessage().getMentionedMembers().get(0);
                     EmbedBuilder eb = new EmbedBuilder()
                             .setColor(Color.magenta)
                             .setThumbnail("http://pixelartmaker.com/art/fec737afdb065ed.png")
-                            .setDescription(name.getUser().getName() + " joined on " + name.getTimeJoined().format(fmt) + " :clock: ")
-                            .setAuthor("Information on " + name.getUser().getName(), "http://www.google.com", name.getUser().getAvatarUrl())
-                            .addField("Status on desktop:", name.getOnlineStatus(ClientType.DESKTOP).toString(), true)
-                            .addField("Nickname: ", name.getNickname() == null ? "No Nickname" : name.getNickname(), true);
+                            .setDescription(mentionUser.getUser().getName() + " joined on " + mentionUser.getTimeJoined().format(fmt) + " :clock: ")
+                            .setAuthor("Information on " + mentionUser.getUser().getName(), "http://www.google.com", mentionUser.getUser().getAvatarUrl())
+                            .addField("Status on desktop:", mentionUser.getOnlineStatus(ClientType.DESKTOP).toString(), true)
+                            .addField("Nickname: ", mentionUser.getNickname() == null ? "No Nickname" : mentionUser.getNickname(), true);
                     event.reply(eb.build());
                     event.reply(event.getAuthor().getAsMention() + " there you go");
                 } catch (IndexOutOfBoundsException ex) {
