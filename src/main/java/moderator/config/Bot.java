@@ -3,6 +3,7 @@ package moderator.config;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import moderator.commands.AdjustNickNameCommand;
 import moderator.commands.ModeratorInfoCommand;
 import moderator.commands.RuleInfoCommand;
 import moderator.commands.UserInfoCommand;
@@ -10,7 +11,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.utils.ChunkingFilter;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -45,7 +45,8 @@ public class Bot {
                     .addCommands(
                             new UserInfoCommand(eventWaiter),
                             new RuleInfoCommand(eventWaiter),
-                            new ModeratorInfoCommand(eventWaiter)
+                            new ModeratorInfoCommand(eventWaiter),
+                            new AdjustNickNameCommand(eventWaiter)
                     )
                     .build();
 
