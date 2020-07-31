@@ -7,6 +7,7 @@ import moderator.commands.AdjustNickNameCommand;
 import moderator.commands.ModeratorInfoCommand;
 import moderator.commands.RuleInfoCommand;
 import moderator.commands.UserInfoCommand;
+import moderator.filter.AntiSpamFilter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -56,6 +57,7 @@ public class Bot {
         jda = JDABuilder.createDefault(ConfigLoad.token())
                 .enableIntents(GatewayIntent.GUILD_PRESENCES)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                .addEventListeners(new AntiSpamFilter())
                 .addEventListeners(eventWaiter, buildCommandClient())
                 .build();
         jda.awaitReady();
