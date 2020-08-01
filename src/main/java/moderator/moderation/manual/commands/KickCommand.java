@@ -1,4 +1,4 @@
-package moderator.moderation.commands;
+package moderator.moderation.manual.commands;
 
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 

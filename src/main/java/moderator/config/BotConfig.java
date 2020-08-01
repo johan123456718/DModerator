@@ -37,7 +37,7 @@ public class BotConfig {
     private CommandClient buildCommandClient(){
         return new CommandClientBuilder()
                     .setPrefix(Config.getPrefix())
-                    .setActivity(Activity.of(Activity.ActivityType.CUSTOM_STATUS,"Watching for any criminal behavior"))
+                    .setActivity(Activity.of(Activity.ActivityType.WATCHING,"You Criminals!"))
                     .setOwnerId(Config.getOwner())
                     .setCoOwnerIds(Config.getMods())
                     .addCommands(
@@ -48,19 +48,19 @@ public class BotConfig {
                             new ClearingCommand(eventWaiter)
                     )
                     .build();
-
     }
 
     private void buildJDA() throws Exception{
+        System.out.println("Starting buildJDA");
         jda = JDABuilder.createDefault(Config.getToken())
                 .enableIntents(GatewayIntent.GUILD_PRESENCES)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .addEventListeners(new AntiSpamFilter())
+                .addEventListeners(new AntiSpamFilter()) // RISBAH: Why is this here and not in buildCommandClient?
                 .addEventListeners(eventWaiter, buildCommandClient())
                 .build();
         jda.awaitReady();
 
-        System.out.println("Finish Building JDA!");
+        System.out.println("Finish buildJDA!");
     }
 
     public static JDA getJDA(){
