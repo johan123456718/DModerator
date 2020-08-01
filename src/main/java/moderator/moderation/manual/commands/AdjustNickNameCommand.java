@@ -29,9 +29,13 @@ public class AdjustNickNameCommand extends Command {
             e -> {
                 try{
                     Member mentionUser = e.getMessage().getMentionedMembers().get(0);
-                    event.reply("Ok! Now we got " + mentionUser.getUser().getName() + ". \nWhat do you want to give the person for nickname?");
-                    insertNickName(event, mentionUser);
-
+                    if(mentionUser.getNickname() != null) {
+                        event.reply("Ok! Now we got " + mentionUser.getNickname() + ". \nWhat do you want to give the person for nickname?");
+                        insertNickName(event, mentionUser);
+                    }else{
+                        event.reply("Ok! Now we got " + mentionUser.getUser().getName() + ". \nWhat do you want to give the person for nickname?");
+                        insertNickName(event, mentionUser);
+                    }
                 }catch (IndexOutOfBoundsException ex) {
                     System.out.println("Exception Occured");
                     event.reply("You need to provide the name as a mention.");

@@ -1,4 +1,4 @@
-package moderator.moderation.auto.commands;
+package moderator.moderation.auto.filter;
 
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
