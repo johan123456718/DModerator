@@ -54,7 +54,6 @@ public class BotConfig {
     private void buildJDA() throws Exception{
         System.out.println("Starting buildJDA");
         jda = JDABuilder.createDefault(Config.getToken())
-                .enableIntents(GatewayIntent.GUILD_PRESENCES)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(new AntiSpamFilter()) // RISBAH: Why is this here and not in buildCommandClient?
                 .addEventListeners(eventWaiter, buildCommandClient())
