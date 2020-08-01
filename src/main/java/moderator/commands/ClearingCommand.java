@@ -34,7 +34,7 @@ public class ClearingCommand extends Command {
             error.setColor(Color.red);
             error.setTitle("⚠️Specifiy your command please⚠️");
             error.setDescription("Usage: " + ConfigLoad.prefix()
-                    + "clear " + "#channel " + "[nrOfMessages [min = 2] [max = 101]]");
+                    + "clear " + "#channel " + "[nrOfMessages [min = 2] [max = 101]]");
             event.getChannel().sendMessage(error.build()).queue();
         }else {
             try {
