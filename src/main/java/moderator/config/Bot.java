@@ -45,7 +45,8 @@ public class Bot {
                             new RuleInfoCommand(eventWaiter),
                             new ModeratorInfoCommand(eventWaiter),
                             new AdjustNickNameCommand(eventWaiter),
-                            new ClearingCommand(eventWaiter)
+                            new ClearingCommand(eventWaiter),
+                            new BotPingCommand(eventWaiter)
                     )
                     .build();
 
