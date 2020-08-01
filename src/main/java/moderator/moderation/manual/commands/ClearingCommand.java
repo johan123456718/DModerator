@@ -1,12 +1,11 @@
-package moderator.commands;
+package moderator.moderation.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import moderator.config.ConfigLoad;
+import moderator.config.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
@@ -33,7 +32,7 @@ public class ClearingCommand extends Command {
             EmbedBuilder error = new EmbedBuilder();
             error.setColor(Color.red);
             error.setTitle("⚠️Specifiy your command please⚠️");
-            error.setDescription("Usage: " + ConfigLoad.prefix()
+            error.setDescription("Usage: " + Config.getPrefix()
                     + "clear " + "#channel " + "[nrOfMessages [min = 2] [max = 101]]");
             event.getChannel().sendMessage(error.build()).queue();
         }else {
@@ -49,7 +48,7 @@ public class ClearingCommand extends Command {
                 EmbedBuilder error = new EmbedBuilder();
                 error.setColor(Color.red);
                 error.setTitle("⚠️WRONG ARGUMENT⚠️");
-                error.setDescription("Usage: " + ConfigLoad.prefix()
+                error.setDescription("Usage: " + Config.getPrefix()
                         + "clear " + "#channel " + "[nrOfMessages, [min = 2] [max = 101]]");
                 event.getChannel().sendMessage(error.build()).queue();
             }

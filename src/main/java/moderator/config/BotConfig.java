@@ -3,8 +3,8 @@ package moderator.config;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import moderator.commands.*;
-import moderator.filter.AntiSpamFilter;
+import moderator.moderation.manual.commands.*;
+import moderator.moderation.auto.commands.AntiSpamFilter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -13,12 +13,12 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public class Bot {
+public class BotConfig {
     private static JDA jda;
     private final EventWaiter eventWaiter;
 
-    public Bot(String fileName){
-        ConfigLoad.load(fileName);
+    public BotConfig(String fileName) throws Exception{
+        Config config = new Config(fileName);
         eventWaiter = new EventWaiter();
         System.out.println("Finish loading bot configurations!");
     }
@@ -36,10 +36,10 @@ public class Bot {
     // To-DO: MUST ADD :owoPolice: emoji to bot ACTIVITY!!! :)
     private CommandClient buildCommandClient(){
         return new CommandClientBuilder()
-                    .setPrefix(ConfigLoad.prefix())
-                    .setActivity(Activity.playing("Watching for any criminal behavior"))
-                    .setOwnerId(ConfigLoad.owner())
-                    .setCoOwnerIds(ConfigLoad.mods())
+                    .setPrefix(Config.getPrefix())
+                    .setActivity(Activity.of(Activity.ActivityType.CUSTOM_STATUS,"Watching for any criminal behavior"))
+                    .setOwnerId(Config.getOwner())
+                    .setCoOwnerIds(Config.getMods())
                     .addCommands(
                             new UserInfoCommand(eventWaiter),
                             new RuleInfoCommand(eventWaiter),
@@ -52,7 +52,7 @@ public class Bot {
     }
 
     private void buildJDA() throws Exception{
-        jda = JDABuilder.createDefault(ConfigLoad.token())
+        jda = JDABuilder.createDefault(Config.getToken())
                 .enableIntents(GatewayIntent.GUILD_PRESENCES)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(new AntiSpamFilter())

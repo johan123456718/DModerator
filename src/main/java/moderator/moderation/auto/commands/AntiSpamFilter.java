@@ -1,4 +1,4 @@
-package moderator.filter;
+package moderator.moderation;
 
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

@@ -1,4 +1,4 @@
-package moderator.commands;
+package moderator.moderation.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
