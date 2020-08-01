@@ -3,8 +3,8 @@ package moderator.config;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import moderator.commands.*;
-import moderator.filter.AntiSpamFilter;
+import moderator.moderation.manual.commands.*;
+import moderator.moderation.auto.filter.AntiSpamFilter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -13,12 +13,12 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public class Bot {
+public class BotConfig {
     private static JDA jda;
     private final EventWaiter eventWaiter;
 
-    public Bot(String fileName){
-        ConfigLoad.load(fileName);
+    public BotConfig(String fileName) throws Exception{
+        Config config = new Config(fileName);
         eventWaiter = new EventWaiter();
         System.out.println("Finish loading bot configurations!");
     }
@@ -36,10 +36,10 @@ public class Bot {
     // To-DO: MUST ADD :owoPolice: emoji to bot ACTIVITY!!! :)
     private CommandClient buildCommandClient(){
         return new CommandClientBuilder()
-                    .setPrefix(ConfigLoad.prefix())
-                    .setActivity(Activity.playing("Watching for any criminal behavior"))
-                    .setOwnerId(ConfigLoad.owner())
-                    .setCoOwnerIds(ConfigLoad.mods())
+                    .setPrefix(Config.getPrefix())
+                    .setActivity(Activity.of(Activity.ActivityType.WATCHING,"You Criminals!"))
+                    .setOwnerId(Config.getOwner())
+                    .setCoOwnerIds(Config.getMods())
                     .addCommands(
                             new UserInfoCommand(eventWaiter),
                             new RuleInfoCommand(eventWaiter),
@@ -49,19 +49,19 @@ public class Bot {
                             new BotPingCommand(eventWaiter)
                     )
                     .build();
-
     }
 
     private void buildJDA() throws Exception{
-        jda = JDABuilder.createDefault(ConfigLoad.token())
+        System.out.println("Starting buildJDA");
+        jda = JDABuilder.createDefault(Config.getToken())
                 .enableIntents(GatewayIntent.GUILD_PRESENCES)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .addEventListeners(new AntiSpamFilter())
+                .addEventListeners(new AntiSpamFilter()) // RISBAH: Why is this here and not in buildCommandClient?
                 .addEventListeners(eventWaiter, buildCommandClient())
                 .build();
         jda.awaitReady();
 
-        System.out.println("Finish Building JDA!");
+        System.out.println("Finish buildJDA!");
     }
 
     public static JDA getJDA(){

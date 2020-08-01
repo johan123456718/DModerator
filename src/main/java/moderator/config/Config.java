@@ -7,18 +7,29 @@ import java.util.Optional;
 import java.util.Properties;
 
 public class Config {
+
     private final String FILE =  "config/bot.properties";
     private final Properties properties;
+    private static String prefix;
+    private static String token;
+    private static String owner;
+    private static String[] mods;
 
-    public Config(String filename) throws Exception{
-        /*
-           fileName can be supplied by main method args;
-           if fileName is null or empty,
-               then load from default properties file
-         */
-        properties = filename.isBlank() ? createProperties(/* Default properties */) : createProperties(filename);
+    public Config(String filename)throws Exception{
+        properties = filename.isBlank() ? createProperties() : createProperties(filename);
+        loadProperties(properties);
     }
 
+    // If custom configuration file is provided
+    private Properties createProperties(String fileName) throws Exception{
+        Properties prop = new Properties();
+        try(InputStream in = new FileInputStream(fileName)){
+            prop.load(in);
+        }
+        return prop;
+    }
+
+    // Default configs
     private Properties createProperties() throws Exception{
         Properties prop = new Properties();
         try(InputStream in = defaultPropertiesFile()){
@@ -29,30 +40,30 @@ public class Config {
 
     private InputStream defaultPropertiesFile(){
         return Optional.ofNullable(getClass().getClassLoader().getResourceAsStream(FILE))
-                .orElseThrow(() -> new NoSuchElementException("Default '/config/bot.properties; file missing or invalid!"));
+                .orElseThrow(() -> new NoSuchElementException("'/config/bot.properties` file is missing or invalid!"));
     }
 
-    private Properties createProperties(String fileName) throws Exception{
-        Properties prop = new Properties();
-        try(InputStream in = new FileInputStream(fileName)){
-            prop.load(in);
-        }
-        return prop;
+    private static void loadProperties(Properties properties){
+        prefix = properties.getProperty("prefix");
+        token = properties.getProperty("token");
+        owner = properties.getProperty("owner");
+        mods = properties.getProperty("mods").split(",");
     }
 
-    String loadPrefix(){
-        return properties.getProperty("prefix");
+    public static String getPrefix(){
+        return Optional.ofNullable(prefix).orElseThrow(() -> new NoSuchElementException("Error: Prefix not found!"));
     }
 
-    String loadToken(){
-        return properties.getProperty("token");
+    public static String getToken(){
+        return Optional.ofNullable(token).orElseThrow(() -> new NoSuchElementException("Error! Token not found!"));
     }
 
-    String loadOwnerId(){
-        return properties.getProperty("owner");
+    public static String getOwner(){
+        return Optional.ofNullable(owner).orElseThrow(() -> new NoSuchElementException("Error! Owner ID not found!"));
     }
 
-    String[] loadModIds(){
-        return properties.getProperty("mods").split(",");
+    public static String[] getMods(){
+        return Optional.ofNullable(mods).orElseThrow(() -> new NoSuchElementException("Error! Mod IDs not found!"));
     }
 }
+
