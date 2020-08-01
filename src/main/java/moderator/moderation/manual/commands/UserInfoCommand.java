@@ -25,7 +25,6 @@ public class UserInfoCommand extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         if(event.getMessage().getMentionedMembers().size()==0){
             event.reply("Please mention the user with the command. Try again!");
         } else {
