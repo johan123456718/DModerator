@@ -30,6 +30,7 @@ public class UserInfoCommand extends Command {
         } else {
             Member mentionedUser = event.getMessage().getMentionedMembers().get(0);
             event.reply(userInfoEmbed(mentionedUser).build());
+            event.reply(event.getAuthor().getAsMention() + " there you go");
         }
     }
 
@@ -53,7 +54,9 @@ public class UserInfoCommand extends Command {
                 .setAuthor(userTag, null, avatarUrl)
                 .addField("Nickname: ", user, true)
                 .addField("Status: ", status, true)
-                .addField("Roles: ", roles, false);
+                .addField("Roles: ", roles, false)
+                .setFooter("End of information", null)
+                .setImage("https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif");
     }
 
 }
