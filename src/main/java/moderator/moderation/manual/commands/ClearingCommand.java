@@ -5,6 +5,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import moderator.config.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class ClearingCommand extends Command {
     private final EventWaiter waiter;
-
+    private final Permission[] requiredRoles = {Permission.MANAGE_ROLES, Permission.ADMINISTRATOR };
     public ClearingCommand(EventWaiter waiter){
         super.name = "clear";
         super.help = "Clearing the chat with x messages";
@@ -21,6 +22,7 @@ public class ClearingCommand extends Command {
         super.category = new Command.Category("Members");
         super.cooldown = 1;
         super.arguments = "[nrOfMessages]";
+        this.userPermissions = requiredRoles;
         this.waiter = waiter;
     }
 
