@@ -3,14 +3,17 @@ package moderator.moderation.manual.commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.concurrent.TimeUnit;
 
 public class AdjustNickNameCommand extends Command {
     private final EventWaiter waiter;
-
+    private final Permission[] requiredRoles = {Permission.MANAGE_ROLES, Permission.ADMINISTRATOR };
     public AdjustNickNameCommand(EventWaiter waiter){
         super.name = "nickname";
         super.help = "Gives a user a nickname";
@@ -18,6 +21,7 @@ public class AdjustNickNameCommand extends Command {
         super.category = new Command.Category("Members");
         super.cooldown = 10;
         super.arguments = "[nickname]";
+        super.userPermissions = requiredRoles;
         this.waiter = waiter;
     }
 
