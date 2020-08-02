@@ -31,24 +31,28 @@ public class AdjustNickNameCommand extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
-        event.reply("Ok! Now, give me the name of a user. Like this @name");
-        waiter.waitForEvent(GuildMessageReceivedEvent.class,
-        e -> e.getAuthor().equals(event.getAuthor()) && e.getChannel().equals(event.getChannel()),
-            e -> {
-                try{
-                    Member mentionUser = e.getMessage().getMentionedMembers().get(0);
-                    if(mentionUser.getNickname() != null) {
-                        event.reply("Ok! Now we got " + mentionUser.getNickname() + ". \nWhat do you want to give the person for nickname?");
-                        insertNickName(event, mentionUser);
-                    }else{
-                        event.reply("Ok! Now we got " + mentionUser.getUser().getName() + ". \nWhat do you want to give the person for nickname?");
-                        insertNickName(event, mentionUser);
-                    }
-                }catch (IndexOutOfBoundsException ex) {
-                    System.out.println("Exception Occured");
-                    event.reply("You need to provide the name as a mention.");
+        if(event.getMessage().getMentionedUsers().size() == 0){
+            EmbedBuilder error = new EmbedBuilder();
+            error.setColor(Color.red);
+            error.setTitle("⚠️You have to mention a user⚠️");
+            error.setDescription("Usage: " + Config.getPrefix()
+                    + "nm " + "@username ");
+            event.getChannel().sendMessage(error.build()).queue();
+        }else {
+            try {
+                Member mentionUser = event.getMessage().getMentionedMembers().get(0);
+                if (mentionUser.getNickname() != null) {
+                    event.reply("Ok! Now we got " + mentionUser.getNickname() + ". \nWhat do you want to give the person for nickname?");
+                    insertNickName(event, mentionUser);
+                } else {
+                    event.reply("Ok! Now we got " + mentionUser.getUser().getName() + ". \nWhat do you want to give the person for nickname?");
+                    insertNickName(event, mentionUser);
                 }
-            }, 15, TimeUnit.SECONDS, () -> event.reply("You did not give me a nickname on time. Try again."));
+            } catch (IndexOutOfBoundsException ex) {
+                System.out.println("Exception Occured");
+                event.reply("You need to provide the name as a mention.");
+            }
+        }
     }
 
     private void insertNickName(CommandEvent event, Member mentionUser){
