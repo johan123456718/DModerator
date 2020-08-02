@@ -3,12 +3,16 @@ package moderator.moderation.manual.commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import moderator.config.Config;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
 
+import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 public class AdjustNickNameCommand extends Command {
@@ -53,8 +57,17 @@ public class AdjustNickNameCommand extends Command {
                 f -> {
                     if (mentionUser != null && f.getAuthor().equals(event.getAuthor()) && f.getChannel().equals(event.getChannel())) {
                         String nickName = f.getMessage().getContentDisplay();
-                        mentionUser.modifyNickname(nickName).queue();
-                        event.reply("Change successful ");
+                        try {
+                            mentionUser.modifyNickname(nickName).queue();
+                            event.reply("Change successful ");
+                        }catch(HierarchyException e){
+                            EmbedBuilder error = new EmbedBuilder();
+                            error.setColor(Color.red);
+                            error.setTitle("⚠️You're not allowed to put nickname⚠️");
+                            error.setDescription(mentionUser.getNickname() + " have a higher role or equal role to yours");
+                            error.setImage("https://media.giphy.com/media/6Q2KA5ly49368/giphy.gif");
+                            event.getChannel().sendMessage(error.build()).queue();
+                        }
                     }
                 });
     }
