@@ -30,28 +30,28 @@ public class ClearingCommand extends Command {
     @Override
     protected void execute(CommandEvent event) {
         String[] args = event.getMessage().getContentRaw().split(" ");
-        if(args.length <= 2){
+        if(args.length <= 1){
             EmbedBuilder error = new EmbedBuilder();
             error.setColor(Color.red);
             error.setTitle("⚠️Specifiy your command please⚠️");
             error.setDescription("Usage: " + Config.getPrefix()
-                    + "clear " + "#channel " + "[nrOfMessages [min = 2] [max = 101]]");
+                    + "clear " + "nrOfMessages [min = 2] [max = 101]");
             event.getChannel().sendMessage(error.build()).queue();
         }else {
             try {
                 event.getMessage().delete().queue();
-                TextChannel target = event.getMessage().getMentionedChannels().get(0);
-                purgeMessages(event, target, Integer.parseInt(args[2]));
+                TextChannel target = event.getMessage().getTextChannel();
+                purgeMessages(event, target, Integer.parseInt(args[1]));
                 EmbedBuilder success = new EmbedBuilder();
                 success.setColor(Color.green);
-                success.setTitle("✅ Successfully deleted " + args[2] + ".");
+                success.setTitle("✅ Successfully deleted " + args[1] + ".");
                 event.getChannel().sendMessage(success.build()).queue();
             }catch(IllegalArgumentException e){
                 EmbedBuilder error = new EmbedBuilder();
                 error.setColor(Color.red);
                 error.setTitle("⚠️WRONG ARGUMENT⚠️");
                 error.setDescription("Usage: " + Config.getPrefix()
-                        + "clear " + "#channel " + "[nrOfMessages, [min = 2] [max = 101]]");
+                        + "clear " + "nrOfMessages, [min = 2] [max = 101]]");
                 event.getChannel().sendMessage(error.build()).queue();
             }
         }
