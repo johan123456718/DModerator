@@ -56,33 +56,28 @@ public class GiveRolesCommand extends Command {
 
     private void insertRoleToUser(CommandEvent event, Member mentionUser){
         Guild guild = event.getGuild();
-        event.reply("\nWhat do you want to give the person for role?");
-        waiter.waitForEvent(GuildMessageReceivedEvent.class,
-                f -> f.getAuthor().equals(event.getAuthor()) && f.getChannel().equals(event.getChannel()),
-                f -> {
-                    if (mentionUser != null && f.getAuthor().equals(event.getAuthor()) && f.getChannel().equals(event.getChannel())) {
-                        try {
-                            Role mentionRole = f.getMessage().getMentionedRoles().get(0);
-                            try {
-                                guild.addRoleToMember(mentionUser, mentionRole).queue();
-                                event.reply("Change successful ");
-                            } catch (HierarchyException e) {
-                                EmbedBuilder error = new EmbedBuilder();
-                                error.setColor(Color.red);
-                                error.setTitle("⚠️You're not allowed to put nickname⚠️");
-                                error.setDescription(mentionUser.getNickname() + " have a higher role or equal role to yours");
-                                error.setImage("https://media.giphy.com/media/6Q2KA5ly49368/giphy.gif");
-                                event.getChannel().sendMessage(error.build()).queue();
-                            }
-                        }catch(IndexOutOfBoundsException e){
-                            EmbedBuilder error = new EmbedBuilder();
-                            error.setColor(Color.red);
-                            error.setTitle("⚠️You didn't insert a role⚠️");
-                            error.setDescription("Usage: @role");
-                            error.setImage("https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif");
-                            event.getChannel().sendMessage(error.build()).queue();
-                        }
-                    }
-            });
+        if (mentionUser != null && event.getAuthor().equals(event.getAuthor()) && event.getChannel().equals(event.getChannel())) {
+            try {
+                Role mentionRole = event.getMessage().getMentionedRoles().get(0);
+                try {
+                    guild.addRoleToMember(mentionUser, mentionRole).queue();
+                    event.reply("Change successful ");
+                } catch (HierarchyException e) {
+                    EmbedBuilder error = new EmbedBuilder();
+                    error.setColor(Color.red);
+                    error.setTitle("⚠️You're not allowed to put nickname⚠️");
+                    error.setDescription(mentionUser.getNickname() + " have a higher role or equal role to yours");
+                    error.setImage("https://media.giphy.com/media/6Q2KA5ly49368/giphy.gif");
+                    event.getChannel().sendMessage(error.build()).queue();
+                }
+            }catch(IndexOutOfBoundsException e){
+                EmbedBuilder error = new EmbedBuilder();
+                error.setColor(Color.red);
+                error.setTitle("⚠️You didn't insert a role⚠️");
+                error.setDescription("Usage: @role");
+                error.setImage("https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif");
+                event.getChannel().sendMessage(error.build()).queue();
+            }
+        }
     }
 }
