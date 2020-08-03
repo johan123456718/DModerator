@@ -3,12 +3,16 @@ package moderator.moderation.manual.commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import moderator.config.Config;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
 
+import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 public class AdjustNickNameCommand extends Command {
@@ -27,24 +31,28 @@ public class AdjustNickNameCommand extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
-        event.reply("Ok! Now, give me the name of a user. Like this @name");
-        waiter.waitForEvent(GuildMessageReceivedEvent.class,
-        e -> e.getAuthor().equals(event.getAuthor()) && e.getChannel().equals(event.getChannel()),
-            e -> {
-                try{
-                    Member mentionUser = e.getMessage().getMentionedMembers().get(0);
-                    if(mentionUser.getNickname() != null) {
-                        event.reply("Ok! Now we got " + mentionUser.getNickname() + ". \nWhat do you want to give the person for nickname?");
-                        insertNickName(event, mentionUser);
-                    }else{
-                        event.reply("Ok! Now we got " + mentionUser.getUser().getName() + ". \nWhat do you want to give the person for nickname?");
-                        insertNickName(event, mentionUser);
-                    }
-                }catch (IndexOutOfBoundsException ex) {
-                    System.out.println("Exception Occured");
-                    event.reply("You need to provide the name as a mention.");
+        if(event.getMessage().getMentionedUsers().size() == 0){
+            EmbedBuilder error = new EmbedBuilder();
+            error.setColor(Color.red);
+            error.setTitle("⚠️You have to mention a user⚠️");
+            error.setDescription("Usage: " + Config.getPrefix()
+                    + "nm " + "@username ");
+            event.getChannel().sendMessage(error.build()).queue();
+        }else {
+            try {
+                Member mentionUser = event.getMessage().getMentionedMembers().get(0);
+                if (mentionUser.getNickname() != null) {
+                    event.reply("Ok! Now we got " + mentionUser.getNickname() + ". \nWhat do you want to give the person for nickname?");
+                    insertNickName(event, mentionUser);
+                } else {
+                    event.reply("Ok! Now we got " + mentionUser.getUser().getName() + ". \nWhat do you want to give the person for nickname?");
+                    insertNickName(event, mentionUser);
                 }
-            }, 15, TimeUnit.SECONDS, () -> event.reply("You did not give me a nickname on time. Try again."));
+            } catch (IndexOutOfBoundsException ex) {
+                System.out.println("Exception Occured");
+                event.reply("You need to provide the name as a mention.");
+            }
+        }
     }
 
     private void insertNickName(CommandEvent event, Member mentionUser){
@@ -53,8 +61,17 @@ public class AdjustNickNameCommand extends Command {
                 f -> {
                     if (mentionUser != null && f.getAuthor().equals(event.getAuthor()) && f.getChannel().equals(event.getChannel())) {
                         String nickName = f.getMessage().getContentDisplay();
-                        mentionUser.modifyNickname(nickName).queue();
-                        event.reply("Change successful ");
+                        try {
+                            mentionUser.modifyNickname(nickName).queue();
+                            event.reply("Change successful ");
+                        }catch(HierarchyException e){
+                            EmbedBuilder error = new EmbedBuilder();
+                            error.setColor(Color.red);
+                            error.setTitle("⚠️You're not allowed to put nickname⚠️");
+                            error.setDescription(mentionUser.getNickname() + " have a higher role or equal role to yours");
+                            error.setImage("https://media.giphy.com/media/6Q2KA5ly49368/giphy.gif");
+                            event.getChannel().sendMessage(error.build()).queue();
+                        }
                     }
                 });
     }

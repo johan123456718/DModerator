@@ -47,6 +47,7 @@ public class BotConfig {
                             new ClearingCommand(eventWaiter),
                             new BotPingCommand(eventWaiter),
                             new HelpCommand()
+                            new GiveRolesCommand(eventWaiter)
                     )
                     .build();
     }
