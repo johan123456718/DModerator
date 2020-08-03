@@ -43,10 +43,10 @@ public class BotConfig {
                     .addCommands(
                             new UserInfoCommand(eventWaiter),
                             new RuleInfoCommand(eventWaiter),
-                            new ModeratorInfoCommand(eventWaiter),
                             new AdjustNickNameCommand(eventWaiter),
                             new ClearingCommand(eventWaiter),
                             new BotPingCommand(eventWaiter),
+                            new HelpCommand()
                             new GiveRolesCommand(eventWaiter)
                     )
                     .build();
@@ -56,7 +56,7 @@ public class BotConfig {
         System.out.println("Starting buildJDA");
         jda = JDABuilder.createDefault(Config.getToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .addEventListeners(new AntiSpamFilter()) // RISBAH: Why is this here and not in buildCommandClient?
+                .addEventListeners(new AntiSpamFilter())
                 .addEventListeners(eventWaiter, buildCommandClient())
                 .build();
         jda.awaitReady();
