@@ -46,7 +46,7 @@ public class BotConfig {
                             new AdjustNickNameCommand(eventWaiter),
                             new ClearingCommand(eventWaiter),
                             new BotPingCommand(eventWaiter),
-                            new HelpCommand()
+                            new HelpCommand(),
                             new GiveRolesCommand(eventWaiter)
                     )
                     .build();
