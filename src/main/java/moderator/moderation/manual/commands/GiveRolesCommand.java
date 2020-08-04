@@ -24,7 +24,7 @@ public class GiveRolesCommand extends Command {
         super.category = new Command.Category("Members");
         super.cooldown = 10;
         super.arguments = "[@RoleName]";
-        super.requiredRole = Permission.MANAGE_ROLES.getName();
+        super.requiredRole = "Mods";
         this.waiter = waiter;
     }
 

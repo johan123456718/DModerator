@@ -14,7 +14,6 @@ import java.util.List;
 
 public class ClearingCommand extends Command {
     private final EventWaiter waiter;
-    private final Permission[] requiredRoles = {Permission.MANAGE_ROLES, Permission.ADMINISTRATOR };
     public ClearingCommand(EventWaiter waiter){
         super.name = "clear";
         super.help = "Clearing the chat with x messages";
@@ -22,7 +21,7 @@ public class ClearingCommand extends Command {
         super.category = new Command.Category("Members");
         super.cooldown = 1;
         super.arguments = "[nrOfMessages]";
-        this.userPermissions = requiredRoles;
+        this.requiredRole = "Mods";
         this.waiter = waiter;
     }
 
