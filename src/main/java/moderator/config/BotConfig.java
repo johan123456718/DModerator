@@ -47,7 +47,8 @@ public class BotConfig {
                             new ClearingCommand(eventWaiter),
                             new BotPingCommand(eventWaiter),
                             new HelpCommand(),
-                            new GiveRolesCommand(eventWaiter)
+                            new GiveRolesCommand(eventWaiter),
+                            new TriggerSwitchForAnti(eventWaiter)
                     )
                     .build();
     }
@@ -56,7 +57,6 @@ public class BotConfig {
         System.out.println("Starting buildJDA");
         jda = JDABuilder.createDefault(Config.getToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .addEventListeners(new AntiSpamFilter())
                 .addEventListeners(eventWaiter, buildCommandClient())
                 .build();
         jda.awaitReady();

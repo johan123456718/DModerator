@@ -17,7 +17,6 @@ public class AntiSpamFilter extends ListenerAdapter {
         Message deleteMessage = event.getMessage();
         String[] cursingWords = {"fuck", "nigger", "whore", "gay", "fag", "faggot"};
         int timesMuted = 0;
-
         for(int i = 0; i < cursingWords.length; i++) {
             if (msg.contains(cursingWords[i]) && event.getAuthor().equals(author.getUser())
                     && !author.getUser().isBot()) {
