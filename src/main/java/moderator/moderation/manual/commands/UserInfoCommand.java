@@ -20,6 +20,8 @@ public class UserInfoCommand extends Command {
         super.aliases = new String[]{"u","U", "userinfo", "userInfo", "UserInfo"};
         super.category = new Category("Members");
         super.cooldown = 10;
+        super.arguments = "[@user]";
+        super.requiredRole = "Programming Friends";
         this.waiter = waiter;
     }
 

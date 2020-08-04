@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AdjustNickNameCommand extends Command {
     private final EventWaiter waiter;
-    private final Permission[] requiredRoles = {Permission.MANAGE_ROLES, Permission.ADMINISTRATOR };
+    //private final Permission[] requiredRoles = {Permission.MANAGE_ROLES, Permission.ADMINISTRATOR };
     public AdjustNickNameCommand(EventWaiter waiter){
         super.name = "nickname";
         super.help = "Gives a user a nickname";
@@ -26,7 +26,7 @@ public class AdjustNickNameCommand extends Command {
         super.category = new Command.Category("Members");
         super.cooldown = 10;
         super.arguments = "[nickname]";
-        super.userPermissions = requiredRoles;
+        super.requiredRole = "Mods";
         this.waiter = waiter;
     }
 
