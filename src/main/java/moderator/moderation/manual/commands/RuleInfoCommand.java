@@ -16,6 +16,7 @@ public class RuleInfoCommand extends Command {
         super.aliases = new String[]{"r"};
         super.category = new Category("Members");
         super.cooldown = 10;
+        super.requiredRole = "Programming Friends";
         this.waiter = waiter;
     }
     @Override

@@ -42,14 +42,15 @@ public class BotConfig {
                     .setCoOwnerIds(Config.getMods())
                     .addCommands(
                             new UserInfoCommand(eventWaiter),
-                            new RuleInfoCommand(eventWaiter),
                             new AdjustNickNameCommand(eventWaiter),
                             new ClearingCommand(eventWaiter),
-                            new BotPingCommand(eventWaiter),
-                            new HelpCommand(),
                             new GiveRolesCommand(eventWaiter),
-                            new TriggerSwitchForAnti(eventWaiter)
+                            new TriggerSwitchForAnti(eventWaiter),
+                            new RuleInfoCommand(eventWaiter),
+                            new BotPingCommand(eventWaiter),
+                            new HelpCommand()
                     )
+                    .useHelpBuilder(false)
                     .build();
     }
 
