@@ -10,7 +10,6 @@ import java.util.List;
 
 public class TriggerSwitchForAnti extends Command {
     private final EventWaiter waiter;
-    private final Permission[] requiredRoles = {Permission.MANAGE_ROLES, Permission.ADMINISTRATOR };
     private List<Object> registeredListeners;
 
     public TriggerSwitchForAnti(EventWaiter waiter){
@@ -20,7 +19,7 @@ public class TriggerSwitchForAnti extends Command {
         super.category = new Command.Category("Admin");
         super.cooldown = 3;
         super.arguments = "[on, off]";
-        super.userPermissions = requiredRoles;
+        super.requiredRole = "Admin";
         this.waiter = waiter;
     }
 
