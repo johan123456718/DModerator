@@ -1,5 +1,8 @@
 package moderator.config;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.NoSuchElementException;
@@ -8,7 +11,7 @@ import java.util.Properties;
 
 public class Config {
 
-    private final String FILE =  "config/bot.properties";
+    private final String FILE = "bot.properties";
     private final Properties properties;
     private static String prefix;
     private static String token;
@@ -40,7 +43,7 @@ public class Config {
 
     private InputStream defaultPropertiesFile(){
         return Optional.ofNullable(getClass().getClassLoader().getResourceAsStream(FILE))
-                .orElseThrow(() -> new NoSuchElementException("'/config/bot.properties` file is missing or invalid!"));
+                .orElseThrow(() -> new NoSuchElementException("'bot.properties` file is missing or invalid!"));
     }
 
     private static void loadProperties(Properties properties){

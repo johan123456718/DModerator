@@ -9,25 +9,28 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class BotConfig {
+    private final static Logger LOGGER = LogManager.getLogger(BotConfig.class);
     private static JDA jda;
     private final EventWaiter eventWaiter;
 
     public BotConfig(String fileName) throws Exception{
         Config config = new Config(fileName);
         eventWaiter = new EventWaiter();
-        System.out.println("Finish loading bot configurations!");
+        LOGGER.info("Finish loading bot configurations!");
     }
 
     public void run(){
         try {
             buildJDA();
             String botName =  getJDA().getSelfUser().getName();
-            System.out.println(String.format("%s is now Running!",botName));
+            LOGGER.info(botName + " is ready to work!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -55,14 +58,12 @@ public class BotConfig {
     }
 
     private void buildJDA() throws Exception{
-        System.out.println("Starting buildJDA");
+        LOGGER.info("Starting buildJDA");
         jda = JDABuilder.createDefault(Config.getToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(eventWaiter, buildCommandClient())
                 .build();
         jda.awaitReady();
-
-        System.out.println("Finish buildJDA!");
     }
 
     public static JDA getJDA(){
