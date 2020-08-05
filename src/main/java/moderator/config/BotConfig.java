@@ -32,7 +32,7 @@ public class BotConfig {
             String botName =  getJDA().getSelfUser().getName();
             LOGGER.info(botName + " is ready to work!");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            LOGGER.fatal(e.getMessage());
         }
     }
 

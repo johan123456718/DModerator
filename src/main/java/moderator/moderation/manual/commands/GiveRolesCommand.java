@@ -11,10 +11,13 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 
 public class GiveRolesCommand extends Command {
+    private final static Logger LOGGER = LogManager.getLogger(GiveRolesCommand.class);
     private final EventWaiter waiter;
 
     public GiveRolesCommand(EventWaiter waiter){
@@ -48,7 +51,7 @@ public class GiveRolesCommand extends Command {
                     insertRoleToUser(event, mentionUser);
                 }
             }catch (IndexOutOfBoundsException ex) {
-                System.out.println("Exception Occured");
+                LOGGER.error(ex.getMessage());
                 event.reply("You need to provide the role as a mention.");
             }
         }

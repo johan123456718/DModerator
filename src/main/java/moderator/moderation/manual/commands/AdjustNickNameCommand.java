@@ -5,20 +5,19 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import moderator.config.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
-import java.util.concurrent.TimeUnit;
+import java.awt.Color;
+
 
 public class AdjustNickNameCommand extends Command {
+    private final static Logger LOGGER = LogManager.getLogger(AdjustNickNameCommand.class);
     private final EventWaiter waiter;
     //private final Permission[] requiredRoles = {Permission.MANAGE_ROLES, Permission.ADMINISTRATOR };
+
     public AdjustNickNameCommand(EventWaiter waiter){
         super.name = "nickname";
         super.help = "Gives a user a nickname";
@@ -52,7 +51,7 @@ public class AdjustNickNameCommand extends Command {
                 Member mentionUser = event.getMessage().getMentionedMembers().get(0);
                 insertNickName(event, mentionUser, args[2]);
             } catch (IndexOutOfBoundsException ex) {
-                System.out.println("Exception Occured");
+                LOGGER.error(ex.getMessage());
                 event.reply("You need to provide the name as a mention.");
             }
         }

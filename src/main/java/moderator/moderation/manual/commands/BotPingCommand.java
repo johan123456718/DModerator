@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 
 public class BotPingCommand extends Command {
-    private final static Logger LOGGER = LogManager.getLogger(BotPingCommand.class);
+
     private final EventWaiter waiter;
 
     public BotPingCommand(EventWaiter waiter){
@@ -29,11 +29,9 @@ public class BotPingCommand extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
-        LOGGER.traceEntry();
         event.reply("Ping: ... ", m -> {
             long ping = event.getMessage().getTimeCreated().until(m.getTimeCreated(), ChronoUnit.MILLIS);
             m.editMessage("Ping: " + ping  + "ms | Websocket: " + event.getJDA().getGatewayPing() + "ms").queue();
         });
-        LOGGER.traceExit();
     }
 }
