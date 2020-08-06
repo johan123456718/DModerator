@@ -1,6 +1,7 @@
 package moderator.moderation.embed;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
@@ -13,6 +14,16 @@ public class EmbedTemplate {
         .setColor(Color.red)
         .setTitle(warningSign + " " + title + " " + warningSign)
         .setDescription(description)
+        .build();
+    }
+
+    public static MessageEmbed getErrorWithImage(String title, String description, String url){
+        final String warningSign = "⚠️";
+        return new EmbedBuilder()
+        .setColor(Color.red)
+        .setTitle(warningSign + " " + title + " " + warningSign)
+        .setDescription(description)
+        .setImage(url)
         .build();
     }
 
