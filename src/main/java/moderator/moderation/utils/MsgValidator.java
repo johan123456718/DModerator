@@ -39,13 +39,13 @@ public class MsgValidator {
         return event.getArgs().split(" ");
     }
 
-    public boolean msgMentionsUsers(){
+    public boolean noUserMentioned(){
         int NO_MENTIONED_MEMBERS = 0;
-        return event.getMessage().getMentionedMembers().size() > NO_MENTIONED_MEMBERS;
+        return event.getMessage().getMentionedMembers().size() == NO_MENTIONED_MEMBERS;
     }
 
     public boolean msgHasThisManyArgs(int count){
-        return event.getArgs().length() == count;
+        return splitMsgArgs().length == count;
     }
 
 }

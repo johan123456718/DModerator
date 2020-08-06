@@ -30,7 +30,7 @@ public class UserInfoCommand extends Command {
     @Override
     protected void execute(CommandEvent event) {
         validator.setEvent(event);
-        if(validator.msgMentionsUsers()){
+        if(validator.noUserMentioned()){
             event.reply("Please mention the user with the command. Try again!");
         } else {
             Member mentionedUser = event.getMessage().getMentionedMembers().get(0);

@@ -35,7 +35,7 @@ public class GiveRolesCommand extends Command {
     @Override
     protected void execute(CommandEvent event) {
         validator.setEvent(event);
-        if(validator.msgMentionsUsers()){
+        if(validator.noUserMentioned()){
             EmbedBuilder error = new EmbedBuilder();
             error.setColor(Color.red);
             error.setTitle("⚠️You have to mention a role⚠️");
