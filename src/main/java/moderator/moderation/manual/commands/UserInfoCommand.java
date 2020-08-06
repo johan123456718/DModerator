@@ -3,15 +3,16 @@ package moderator.moderation.manual.commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import moderator.moderation.utils.MsgValidator;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class UserInfoCommand extends Command {
 
+    private MsgValidator validator;
     private final EventWaiter waiter;
 
     public UserInfoCommand(EventWaiter waiter){
@@ -23,11 +24,13 @@ public class UserInfoCommand extends Command {
         super.arguments = "[@user]";
         super.requiredRole = "Programming Friends";
         this.waiter = waiter;
+        validator = new MsgValidator();
     }
 
     @Override
     protected void execute(CommandEvent event) {
-        if(event.getMessage().getMentionedMembers().size()==0){
+        validator.setEvent(event);
+        if(validator.msgMentionsUsers()){
             event.reply("Please mention the user with the command. Try again!");
         } else {
             Member mentionedUser = event.getMessage().getMentionedMembers().get(0);

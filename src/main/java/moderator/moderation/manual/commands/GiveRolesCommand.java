@@ -4,12 +4,11 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import moderator.config.Config;
+import moderator.moderation.utils.MsgValidator;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +18,7 @@ import java.awt.*;
 public class GiveRolesCommand extends Command {
     private final static Logger LOGGER = LogManager.getLogger(GiveRolesCommand.class);
     private final EventWaiter waiter;
+    private MsgValidator validator;
 
     public GiveRolesCommand(EventWaiter waiter){
         super.name = "giverole";
@@ -29,11 +29,13 @@ public class GiveRolesCommand extends Command {
         super.arguments = "[@RoleName]";
         super.requiredRole = "Mods";
         this.waiter = waiter;
+        validator = new MsgValidator();
     }
 
     @Override
     protected void execute(CommandEvent event) {
-        if(event.getMessage().getMentionedUsers().size() == 0){
+        validator.setEvent(event);
+        if(validator.msgMentionsUsers()){
             EmbedBuilder error = new EmbedBuilder();
             error.setColor(Color.red);
             error.setTitle("⚠️You have to mention a role⚠️");

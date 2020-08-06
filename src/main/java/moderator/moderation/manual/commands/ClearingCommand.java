@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import moderator.config.Config;
+import moderator.moderation.utils.MsgValidator;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
@@ -14,6 +15,8 @@ import java.util.List;
 
 public class ClearingCommand extends Command {
     private final EventWaiter waiter;
+    private MsgValidator validator;
+
     public ClearingCommand(EventWaiter waiter){
         super.name = "clear";
         super.help = "Clearing the chat with x messages";
@@ -23,13 +26,15 @@ public class ClearingCommand extends Command {
         super.arguments = "[nrOfMessages]";
         this.requiredRole = "Mods";
         this.waiter = waiter;
+        validator = new MsgValidator();
     }
 
 
     @Override
     protected void execute(CommandEvent event) {
-        String[] args = event.getMessage().getContentRaw().split(" ");
-        if(args.length <= 1){
+        validator.setEvent(event);
+
+        if(validator.msgHasThisManyArgs(0)){
             EmbedBuilder error = new EmbedBuilder();
             error.setColor(Color.red);
             error.setTitle("⚠️Specifiy your command please⚠️");
@@ -38,12 +43,13 @@ public class ClearingCommand extends Command {
             event.getChannel().sendMessage(error.build()).queue();
         }else {
             try {
+                String[] args = validator.splitMsgArgs();
                 event.getMessage().delete().queue();
                 TextChannel target = event.getMessage().getTextChannel();
-                purgeMessages(event, target, Integer.parseInt(args[1]));
+                purgeMessages(event, target, Integer.parseInt(args[0]));
                 EmbedBuilder success = new EmbedBuilder();
                 success.setColor(Color.green);
-                success.setTitle("✅ Successfully deleted " + args[1] + ".");
+                success.setTitle("✅ Successfully deleted " + args[0] + ".");
                 event.getChannel().sendMessage(success.build()).queue();
             }catch(IllegalArgumentException e){
                 EmbedBuilder error = new EmbedBuilder();
