@@ -4,10 +4,12 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import moderator.config.Config;
+import moderator.moderation.embed.EmbedTemplate;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
@@ -34,12 +36,11 @@ public class GiveRolesCommand extends Command {
     @Override
     protected void execute(CommandEvent event) {
         if(event.getMessage().getMentionedUsers().size() == 0){
-            EmbedBuilder error = new EmbedBuilder();
-            error.setColor(Color.red);
-            error.setTitle("⚠️You have to mention a role⚠️");
-            error.setDescription("Usage: " + Config.getPrefix()
-                    + "nm " + "@username ");
-            event.getChannel().sendMessage(error.build()).queue();
+            String title = "You have to mention a role";
+            String description = "Usage: " + Config.getPrefix()
+                    + "nm " + "@username ";
+            MessageEmbed errorMessage = EmbedTemplate.getDefaultError(title, description);
+            event.getChannel().sendMessage(errorMessage).queue();
         }else{
             try{
                 Member mentionUser = event.getMessage().getMentionedMembers().get(0);
@@ -66,20 +67,18 @@ public class GiveRolesCommand extends Command {
                     guild.addRoleToMember(mentionUser, mentionRole).queue();
                     event.reply("Change successful ");
                 } catch (HierarchyException e) {
-                    EmbedBuilder error = new EmbedBuilder();
-                    error.setColor(Color.red);
-                    error.setTitle("⚠️You're not allowed to put nickname⚠️");
-                    error.setDescription(mentionUser.getNickname() + " have a higher role or equal role to yours");
-                    error.setImage("https://media.giphy.com/media/6Q2KA5ly49368/giphy.gif");
-                    event.getChannel().sendMessage(error.build()).queue();
+                    String title = "You're not allowed to put nickname";
+                    String description = mentionUser.getNickname() + " have a higher role or equal role to yours";
+                    String url = "https://media.giphy.com/media/6Q2KA5ly49368/giphy.gif";
+                    MessageEmbed errorMessage = EmbedTemplate.getErrorWithImage(title, description, url);
+                    event.getChannel().sendMessage(errorMessage).queue();
                 }
             }catch(IndexOutOfBoundsException e){
-                EmbedBuilder error = new EmbedBuilder();
-                error.setColor(Color.red);
-                error.setTitle("⚠️You didn't insert a role⚠️");
-                error.setDescription("Usage: @role");
-                error.setImage("https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif");
-                event.getChannel().sendMessage(error.build()).queue();
+                String title = "You didn't insert a role";
+                String description = "Usage: @role";
+                String url = "https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif";
+                MessageEmbed errorMessage = EmbedTemplate.getErrorWithImage(title, description, url);
+                event.getChannel().sendMessage(errorMessage).queue();
             }
         }
     }
