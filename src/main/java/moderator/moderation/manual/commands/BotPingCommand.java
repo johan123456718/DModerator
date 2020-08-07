@@ -3,15 +3,7 @@ package moderator.moderation.manual.commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Message;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.time.temporal.ChronoUnit;
-import java.util.function.Consumer;
-
-
 
 public class BotPingCommand extends Command {
 

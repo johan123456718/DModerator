@@ -16,7 +16,6 @@ import java.awt.Color;
 public class AdjustNickNameCommand extends Command {
     private final static Logger LOGGER = LogManager.getLogger(AdjustNickNameCommand.class);
     private final EventWaiter waiter;
-    //private final Permission[] requiredRoles = {Permission.MANAGE_ROLES, Permission.ADMINISTRATOR };
 
     public AdjustNickNameCommand(EventWaiter waiter){
         super.name = "nickname";
