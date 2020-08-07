@@ -4,8 +4,6 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import moderator.moderation.auto.filter.AntiSpamFilter;
-import net.dv8tion.jda.api.Permission;
-
 import java.util.List;
 
 public class TriggerSwitchForAnti extends Command {
