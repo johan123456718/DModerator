@@ -3,6 +3,7 @@ package moderator.config;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import moderator.moderation.auto.notifcation.NotificationForUsers;
 import moderator.moderation.manual.commands.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -60,6 +61,7 @@ public class BotConfig {
         LOGGER.info("Starting buildJDA");
         jda = JDABuilder.createDefault(Config.getToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                .addEventListeners(new NotificationForUsers())
                 .addEventListeners(eventWaiter, buildCommandClient())
                 .build();
         jda.awaitReady();
