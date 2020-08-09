@@ -4,65 +4,88 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import moderator.config.Config;
+import moderator.moderation.manual.commands.CustomCommand;
 import moderator.moderation.utils.MsgUtils;
+import moderator.moderation.utils.embedtemplates.ImgUrlRandomizer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
-public class UserInfoCommand extends Command {
+import static moderator.moderation.utils.embedtemplates.CustomEmbedMsg.DefaultMessages;
+import static moderator.moderation.utils.embedtemplates.ImgUrlRandomizer.ImageFile;
 
-    private MsgUtils validator;
-    private final EventWaiter waiter;
+public class UserInfoCommand extends CustomCommand {
 
-    public UserInfoCommand(EventWaiter waiter){
+    private ImgUrlRandomizer successImg;
+
+    public UserInfoCommand(){
         super.name = "user";
-        super.help = "Get some information about a user";
+        super.help = "Display user information";
         super.aliases = new String[]{"u","U", "userinfo", "userInfo", "UserInfo"};
         super.category = Config.getGeneralCategory();
-        super.cooldown = 10;
+        super.cooldown = Config.getDefaultCooldown();
         super.arguments = "@Member";
-        super.requiredRole = "Programming Friends";
-        this.waiter = waiter;
-        validator = new MsgUtils();
+        successImg = new ImgUrlRandomizer();
     }
 
     @Override
     protected void execute(CommandEvent event) {
-        validator.initMsgUtils(event);
-        if(validator.noUserMentioned()){
-            event.reply("Please mention the user with the command. Try again!");
-        } else {
-            Member mentionedUser = event.getMessage().getMentionedMembers().get(0);
-            event.reply(userInfoEmbed(mentionedUser).build());
-            event.reply(event.getAuthor().getAsMention() + " there you go");
-        }
+        super.customCommandExecute(event);
+    }
+
+    @Override
+    protected void validateArgs(){
+        if(super.msgUtils.noUserMentioned()) throw new IllegalArgumentException(DefaultMessages.NO_USER_ERROR);
+    }
+
+    @Override
+    protected void businessLogic(){
+        Member targetMember = super.msgUtils.getFirstMentionedMember();
+        EmbedBuilder userInfoEmbed = userInfoEmbed(targetMember);
+        sendUserInfoEmbed(userInfoEmbed);
+    }
+
+
+    private void sendUserInfoEmbed(EmbedBuilder userInfoEmbed){
+        msgUtils.getCurrentEvent().reply(userInfoEmbed.build());
     }
 
     private EmbedBuilder userInfoEmbed(Member member){
         Color embedColor = member.getRoles().get(0).getColor();
         String avatarUrl = member.getUser().getAvatarUrl();
-        String desc = "Joined: " + member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd-MM-YYYY"));
-        String user = member.getEffectiveName();
-        String userTag = member.getUser().getAsTag();
-        String status = member.getOnlineStatus().name().replaceAll("_", " ");// modifies DO-NOT-DISTURBED
-        String roles = member.getRoles()
-                .stream()
-                .map(n -> String.valueOf(n.getAsMention()))
-                .collect(Collectors.joining(" "));
-
+        String userName  = member.getEffectiveName();
+        String userTag   = member.getUser().getAsTag();
+        String status    = getMemberOnlineStatus(member);
+        String roles     = allRolesAsString(member);
+        String desc      = getMemberJoinDate(member);
 
         return new EmbedBuilder()
                 .setColor(embedColor)
                 .setThumbnail(avatarUrl)
                 .setDescription(desc)
                 .setAuthor(userTag, null, avatarUrl)
-                .addField("Nickname: ", user, true)
+                .addField("Nickname: ", userName, true)
                 .addField("Status: ", status, true)
                 .addField("Roles: ", roles, false)
-                .setFooter("End of information", null)
-                .setImage("https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif");
+                .setImage(successImg.getRandomImgURL(ImageFile.SUCCESS_URL))
+                .setFooter("That it folks!", "https://cdn.discordapp.com/emojis/725006895395635210.png?v=1");
+    }
+
+    private String getMemberJoinDate(Member targetMember){
+        return "Joined: " + targetMember.getTimeJoined().format(DateTimeFormatter.ofPattern("dd-MM-YYYY"));
+    }
+
+    private String getMemberOnlineStatus(Member targetMember){
+        return targetMember.getOnlineStatus().name().replaceAll("_", " ");// modifies DO-NOT-DISTURBED status
+    }
+
+    private String allRolesAsString(Member targetMember){
+        return targetMember.getRoles()
+                .stream()
+                .map(n -> String.valueOf(n.getAsMention()))
+                .collect(Collectors.joining(" "));
     }
 
 }

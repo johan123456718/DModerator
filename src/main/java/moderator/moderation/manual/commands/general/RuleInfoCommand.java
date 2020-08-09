@@ -9,17 +9,16 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import java.awt.*;
 
 public class RuleInfoCommand extends Command {
-    private final EventWaiter waiter;
 
-    public RuleInfoCommand(EventWaiter waiter){
+    public RuleInfoCommand(){
         super.name = "rule";
         super.help = "Rules of the Server!";
         super.aliases = new String[]{"r"};
         super.category = Config.getGeneralCategory();
         super.cooldown = 10;
         super.requiredRole = "Programming Friends";
-        this.waiter = waiter;
     }
+
     @Override
     protected void execute(CommandEvent event) {
         event.reply("Here's the rules");
@@ -32,6 +31,5 @@ public class RuleInfoCommand extends Command {
                 .addField("Dont be a dick❗", "if you are a dick, you will get x-minutes mute", false);
 
         event.reply(eb.build());
-        event.reply(event.getAuthor().getAsMention() + " there you go");
     }
 }

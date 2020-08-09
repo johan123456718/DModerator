@@ -34,7 +34,6 @@ public class BotConfig {
             buildJDA();
             String botName =  getJDA().getSelfUser().getName();
             LOGGER.info(botName + " is ready to work!");
-            getJDA().getEventManager().getRegisteredListeners().forEach(LOGGER::info);
         } catch (Exception e) {
             LOGGER.fatal(e.getMessage());
         }
@@ -48,12 +47,12 @@ public class BotConfig {
                     .setOwnerId(Config.getOwner())
                     .setCoOwnerIds(Config.getCoOwners())
                     .addCommands(
-                            new UserInfoCommand(eventWaiter),
+                            new UserInfoCommand(),
                             new AdjustNickNameCommand(),
                             new DeleteMsgByBulkCommand(),
                             new GiveRolesCommand(),
                             new ExpletivesFilterSwitch(),
-                            new RuleInfoCommand(eventWaiter),
+                            new RuleInfoCommand(),
                             new BotPingCommand(),
                             new HelpCommand()
                     )

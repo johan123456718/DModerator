@@ -11,7 +11,7 @@ public class BotPingCommand extends Command {
 
     public BotPingCommand(){
         super.name = "botping";
-        super.help = "Use to test if bot works and receive ping info";
+        super.help = "Receive bot ping info";
         super.aliases = new String[]{"bp", "BP", "ping", "Ping", "BotPing", "Botping"};
         super.cooldown = Config.getDefaultCooldown();
         super.category = Config.getGeneralCategory();
