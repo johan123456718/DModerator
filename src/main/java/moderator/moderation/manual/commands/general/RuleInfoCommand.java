@@ -1,8 +1,9 @@
-package moderator.moderation.manual.commands;
+package moderator.moderation.manual.commands.general;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import moderator.config.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.awt.*;
@@ -12,9 +13,9 @@ public class RuleInfoCommand extends Command {
 
     public RuleInfoCommand(EventWaiter waiter){
         super.name = "rule";
-        super.help = "This will give you the rules";
+        super.help = "Rules of the Server!";
         super.aliases = new String[]{"r"};
-        super.category = new Category("Members");
+        super.category = Config.getGeneralCategory();
         super.cooldown = 10;
         super.requiredRole = "Programming Friends";
         this.waiter = waiter;

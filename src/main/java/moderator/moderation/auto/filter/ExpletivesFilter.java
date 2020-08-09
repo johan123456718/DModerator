@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.util.List;
 import java.util.concurrent.*;
 
-public class AntiSpamFilter extends ListenerAdapter {
+public class ExpletivesFilter extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event){

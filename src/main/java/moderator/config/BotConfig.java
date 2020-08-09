@@ -3,8 +3,11 @@ package moderator.config;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import moderator.moderation.manual.commands.*;
-import moderator.moderation.auto.filter.AntiSpamFilter;
+import moderator.moderation.manual.commands.general.BotPingCommand;
+import moderator.moderation.manual.commands.general.HelpCommand;
+import moderator.moderation.manual.commands.general.RuleInfoCommand;
+import moderator.moderation.manual.commands.general.UserInfoCommand;
+import moderator.moderation.manual.commands.mod.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -21,7 +24,7 @@ public class BotConfig {
     private final EventWaiter eventWaiter;
 
     public BotConfig(String fileName) throws Exception{
-        Config config = new Config(fileName);
+        new Config(fileName);
         eventWaiter = new EventWaiter();
         LOGGER.info("Finish loading bot configurations!");
     }
@@ -31,6 +34,7 @@ public class BotConfig {
             buildJDA();
             String botName =  getJDA().getSelfUser().getName();
             LOGGER.info(botName + " is ready to work!");
+            getJDA().getEventManager().getRegisteredListeners().forEach(LOGGER::info);
         } catch (Exception e) {
             LOGGER.fatal(e.getMessage());
         }
@@ -42,15 +46,15 @@ public class BotConfig {
                     .setPrefix(Config.getPrefix())
                     .setActivity(Activity.of(Activity.ActivityType.WATCHING,"You Criminals!"))
                     .setOwnerId(Config.getOwner())
-                    .setCoOwnerIds(Config.getMods())
+                    .setCoOwnerIds(Config.getCoOwners())
                     .addCommands(
                             new UserInfoCommand(eventWaiter),
-                            new AdjustNickNameCommand(eventWaiter),
-                            new ClearingCommand(eventWaiter),
-                            new GiveRolesCommand(eventWaiter),
-                            new TriggerSwitchForAnti(eventWaiter),
+                            new AdjustNickNameCommand(),
+                            new DeleteMsgByBulkCommand(),
+                            new GiveRolesCommand(),
+                            new ExpletivesFilterSwitch(),
                             new RuleInfoCommand(eventWaiter),
-                            new BotPingCommand(eventWaiter),
+                            new BotPingCommand(),
                             new HelpCommand()
                     )
                     .useHelpBuilder(false)
