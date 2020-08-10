@@ -43,7 +43,7 @@ public class CustomEmbedMsg implements Cloneable {
         return new EmbedBuilder().setTitle(title)
                                  .setDescription(cmdHelp)
                                  .setColor(Color.RED)
-                                 .setImage(imgURL);
+                                 .setImage(imgURL); // TO-DO test if boolean is false
     }
 
     public EmbedBuilder successEmbed(String success, boolean includeImage){

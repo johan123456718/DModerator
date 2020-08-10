@@ -29,17 +29,6 @@ public class GiveRolesCommand extends CustomCommand {
         super.customCommandExecute(event);
     }
 
-    @Override
-    protected void handleArgs() {
-        try{
-            validateArgs();
-            businessLogic();
-        } catch(IllegalArgumentException | HierarchyException e){
-            customEmbed.sendErrorEmbed(e.getMessage(), true);
-        } catch(Exception e){
-            customEmbed.sendErrorEmbed(DefaultMessages.ERROR, true);
-        }
-    }
 
     @Override
     protected void validateArgs() {
