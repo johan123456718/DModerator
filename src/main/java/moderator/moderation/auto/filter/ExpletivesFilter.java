@@ -15,7 +15,7 @@ public class ExpletivesFilter extends ListenerAdapter {
         Member author = event.getMember();
         String msg = event.getMessage().getContentDisplay();
         Message deleteMessage = event.getMessage();
-        String[] cursingWords = {"fuck", "nigger", "whore", "gay", "fag", "faggot"};
+        String[] cursingWords = {"fuck" /* TO-DO: don't hardcode this */};
         int timesMuted = 0;
         for(int i = 0; i < cursingWords.length; i++) {
             if (msg.contains(cursingWords[i]) && event.getAuthor().equals(author.getUser())
